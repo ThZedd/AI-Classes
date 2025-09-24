@@ -110,44 +110,49 @@ def move_pacman_reative():
 
 def move_pacman_towards_pill():
     global score
-    if len(pill_positions) == 0 :
+    # Se o comprimento da lista for 0 entao o PacMan move-se aleatoriamente
+    if len(pill_positions) == 0 : 
         return move_pacman_reative()
 
-    min_dist = float('inf')
-    save_pill =[]
+    min_dist = float('inf') #Isto guarda a distancia da pilula mais proxima
+    save_pill =[] #isto guarda a posicao da pilula mais proxima
     for pill in pill_positions:
-        closest_pill = abs(pacman_position[0] - pill[0]) + abs(pacman_position[1] - pill[1])
-        if closest_pill < min_dist:
-            min_dist = closest_pill
-            save_pill = pill
-            if min_dist == 0:
+        closest_pill = abs(pacman_position[0] - pill[0]) + abs(pacman_position[1] - pill[1]) #isto faz um simples calculo para verificar a distancia da pilula mais proxima
+        if closest_pill < min_dist: # caso o valor da pilula mais proxima for menor que o da distancia da pilula mais proxima entao
+            min_dist = closest_pill # a pilula mais proxima agora é essa pilula
+            save_pill = pill # guarda a posicao dessa pilula
+            if min_dist == 0: # caso a distancia a que a pilula se encontra for 0 entao verifica se o pacman comeu a pilula ou nao
                 check_pos_pill(pill)
-    if pacman_position[0] > save_pill[0]:
-        new_position =  [pacman_position[0] - 1, pacman_position[1]]
-        if is_valid_position(new_position):
+    if pacman_position[0] > save_pill[0]: # caso a posicao da linha for maior que a posicao da pilula mais proxima entao ele move-se para cima
+        new_position =  [pacman_position[0] - 1, pacman_position[1]] # move "UP"
+        if is_valid_position(new_position): # verifica se a nova posicao é valida, se for retorna a nova posicao, se nao move-se aleatoriamente 
             return new_position
         else:
             return move_pacman_reative()
-    elif pacman_position[0] < save_pill[0]:
-        new_position = [pacman_position[0] + 1, pacman_position[1]]
-        if is_valid_position(new_position):
+        
+    elif pacman_position[0] < save_pill[0]:  # caso a posicao da linha for menor que a posicao da pilula mais proxima entao ele move-se para baixo
+        new_position = [pacman_position[0] + 1, pacman_position[1]] # move "DOWN"
+        if is_valid_position(new_position): # verifica se a nova posicao é valida, se for retorna a nova posicao, se nao move-se aleatoriamente 
             return new_position
         else:
             return move_pacman_reative()
-    elif pacman_position[1] > save_pill[1]:
-        new_position = [pacman_position[0], pacman_position[1] - 1]
-        if is_valid_position(new_position):
+        
+    elif pacman_position[1] > save_pill[1]:  # caso a posicao da coluna for maior que a posicao da pilula mais proxima entao ele move-se para a esquerda
+        new_position = [pacman_position[0], pacman_position[1] - 1] # move "LEFT"
+        if is_valid_position(new_position): # verifica se a nova posicao é valida, se for retorna a nova posicao, se nao move-se aleatoriamente 
             return new_position
         else:
             return move_pacman_reative()
-    elif pacman_position[1] < save_pill[1]:
-        new_position = [pacman_position[0], pacman_position[1] + 1]
-        if is_valid_position(new_position):
+        
+    elif pacman_position[1] < save_pill[1]:  # caso a posicao da coluna for menor que a posicao da pilula mais proxima entao ele move-se para a direita
+        new_position = [pacman_position[0], pacman_position[1] + 1] # move "RIGHT"
+        if is_valid_position(new_position): # verifica se a nova posicao é valida, se for retorna a nova posicao, se nao move-se aleatoriamente 
             return new_position
         else:
             return move_pacman_reative()
+        
     else:
-        return move_pacman_reative()
+        return move_pacman_reative() #caso nenhuma das condicoes acima funcione move-se aleatoriamente
 
     
              
