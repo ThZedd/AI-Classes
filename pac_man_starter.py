@@ -111,25 +111,56 @@ def move_pacman_reative():
 def move_pacman_towards_pill():
     global score
     if len(pill_positions) == 0 :
-        move_pacman_reative()
+        return move_pacman_reative()
 
     min_dist = float('inf')
+    save_pill =[]
     for pill in pill_positions:
         closest_pill = abs(pacman_position[0] - pill[0]) + abs(pacman_position[1] - pill[1])
         if closest_pill < min_dist:
-            min_dist = closest_pill   
+            min_dist = closest_pill
+            save_pill = pill
+            if min_dist == 0:
+                check_pos_pill(pill)
+    if pacman_position[0] > save_pill[0]:
+        new_position =  [pacman_position[0] - 1, pacman_position[1]]
+        if is_valid_position(new_position):
+            return new_position
+        else:
+            return move_pacman_reative()
+    elif pacman_position[0] < save_pill[0]:
+        new_position = [pacman_position[0] + 1, pacman_position[1]]
+        if is_valid_position(new_position):
+            return new_position
+        else:
+            return move_pacman_reative()
+    elif pacman_position[1] > save_pill[1]:
+        new_position = [pacman_position[0], pacman_position[1] - 1]
+        if is_valid_position(new_position):
+            return new_position
+        else:
+            return move_pacman_reative()
+    elif pacman_position[1] < save_pill[1]:
+        new_position = [pacman_position[0], pacman_position[1] + 1]
+        if is_valid_position(new_position):
+            return new_position
+        else:
+            return move_pacman_reative()
+    else:
+        return move_pacman_reative()
+
+    
+             
 
 # Função para mover Pac-Man
 def move_pacman_models():
     global score
-    new_position = move_pacman_reative()
+    new_position = move_pacman_towards_pill()
+
+    if is_valid_position(new_position) and new_position not in ghost_positions and new_position not in visited_positions:
+        pacman_position[:] = new_position
+        visited_positions.append(new_position)
     
-    if is_valid_position(new_position) and check_pos_pill(new_position) and new_position not in ghost_positions and new_position not in visited_positions:
-        pacman_position[:] = new_position
-        visited_positions.append(new_position)
-    elif is_valid_position(new_position) and new_position not in visited_positions:
-        pacman_position[:] = new_position
-        visited_positions.append(new_position)
     
              
 # Função para mover fantasmas aleatoriamente
@@ -188,6 +219,7 @@ def game_loop():
        
         #move_pacman_reative()
         move_pacman_models()
+        #move_pacman_towards_pill()
         print(f"Nova posição: {pacman_position}")
         print(f"Visitado: {visited_positions}")
         # Mover os fantasmas depois de Pac-Man
